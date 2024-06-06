@@ -1,0 +1,6 @@
+
+#Added react-router-dom
+npm i react-router-dom --save styled-components
+
+#Added for the slider for the home page
+npm install react-slick slick-carousel
