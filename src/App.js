@@ -4,6 +4,7 @@ import AboutUs from "./components/AboutUs";
 import Home from "./components/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import Movie from "./components/Movie";
 
 function App() {
   return (
@@ -14,9 +15,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/AboutUs" element={<AboutUs />}></Route>
+            <Route path="/Movies" element={<Movie />}></Route>
           </Routes>
-          {/*<TestQuery />
-         <AboutUs />  <Home />*/}
         </div>
       </Router>
     </React.StrictMode>

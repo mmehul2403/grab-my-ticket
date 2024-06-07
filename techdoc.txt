@@ -4,3 +4,7 @@ npm i react-router-dom --save styled-components
 
 #Added for the slider for the home page
 npm install react-slick slick-carousel
+
+#Added date formate utilities (https://date-fns.org/)
+npm install date-fns
+
