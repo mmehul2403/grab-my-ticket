@@ -18,9 +18,12 @@ import { QUERY_USER } from "../queries/UserGraphql";
 import { useLazyQuery } from "@apollo/client";
 
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
+import { useNavigate } from "react-router-dom";
+
 const defaultTheme = createTheme();
 
 export default function SignInView() {
+  const navigate = useNavigate();
   const [signIn, { loading, error, data }] = useLazyQuery(QUERY_USER);
   if (loading) return <p>Loading ...</p>;
   if (error) return `Error! ${error}`;
@@ -29,32 +32,33 @@ export default function SignInView() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    await signIn({
+    signIn({
       variables: {
         emailAddress: formData.get("email_address"),
         password: formData.get("password"),
       },
+    }).then((resp) => {
+      const code = resp.data?.signIn?.code;
+      const message = resp.data?.signIn?.message;
+
+      if (0 === code) {
+        enqueueSnackbar("Sign in Succesfully!", {
+          variant: "success",
+          autoHideDuration: 2000,
+          onClose: () => {
+            navigate({
+              pathname: "/UserProfile",
+            });
+          },
+        });
+      } else {
+        enqueueSnackbar(message || "Failed", {
+          variant: "warning",
+          autoHideDuration: 2000,
+          onClose: () => {},
+        });
+      }
     });
-
-    const code = data?.signIn?.code;
-    console.log("code:" + code);
-    const message = data?.signIn?.message;
-    // debugger;
-    console.log("data:" + JSON.stringify(data));
-
-    if (0 === code) {
-      enqueueSnackbar("Sign in Succesfully!", {
-        variant: "success",
-        autoHideDuration: 2000,
-        onClose: () => {},
-      });
-    } else {
-      enqueueSnackbar(message || "Failed", {
-        variant: "warning",
-        autoHideDuration: 2000,
-        onClose: () => {},
-      });
-    }
   };
 
   return (
