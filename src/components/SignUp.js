@@ -29,7 +29,7 @@ export default function SignUp() {
     onCompleted({ createUser }) {
       enqueueSnackbar("Congraulations!", {
         variant: "success",
-        autoHideDuration: 2000,
+        autoHideDuration: 1000,
         onClose: () => {
           navigate({
             pathname: "/SignIn",

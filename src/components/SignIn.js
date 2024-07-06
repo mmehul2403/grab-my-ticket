@@ -24,7 +24,7 @@ const defaultTheme = createTheme();
 
 export default function SignInView() {
   const navigate = useNavigate();
-  const [signIn, { loading, error, data }] = useLazyQuery(QUERY_USER);
+  const [signIn, { loading, error }] = useLazyQuery(QUERY_USER);
   if (loading) return <p>Loading ...</p>;
   if (error) return `Error! ${error}`;
 
@@ -44,7 +44,7 @@ export default function SignInView() {
       if (0 === code) {
         enqueueSnackbar("Sign in Succesfully!", {
           variant: "success",
-          autoHideDuration: 2000,
+          autoHideDuration: 1000,
           onClose: () => {
             navigate({
               pathname: "/UserProfile",
@@ -54,7 +54,7 @@ export default function SignInView() {
       } else {
         enqueueSnackbar(message || "Failed", {
           variant: "warning",
-          autoHideDuration: 2000,
+          autoHideDuration: 1000,
           onClose: () => {},
         });
       }
