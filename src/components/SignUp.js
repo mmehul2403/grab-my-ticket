@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -16,7 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "./common/Copyright";
 // import bcrypt from "bcrypt";
 import bcrypt from "bcryptjs-react";
-import { CREATE_USER } from "../queries/UserGraphql";
+import { MUTATION_USER_CREATE } from "../queries/UserGraphql";
 import { useMutation } from "@apollo/client";
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import { useNavigate } from "react-router-dom";
@@ -25,20 +23,8 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [createUser] = useMutation(CREATE_USER, {
-    onCompleted({ createUser }) {
-      enqueueSnackbar("Congraulations!", {
-        variant: "success",
-        autoHideDuration: 1000,
-        onClose: () => {
-          navigate({
-            pathname: "/SignIn",
-          });
-        },
-      });
-    },
-  });
-  const handleSubmit = (event) => {
+  const [createUser] = useMutation(MUTATION_USER_CREATE);
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
 
@@ -52,9 +38,18 @@ export default function SignUp() {
     data.set("password", hash);
 
     let userData = Object.fromEntries(data);
-    createUser({
+    let createUserResp = await createUser({
       variables: {
         user: userData,
+      },
+    });
+    enqueueSnackbar("Congraulations!", {
+      variant: "success",
+      autoHideDuration: 1000,
+      onClose: () => {
+        navigate({
+          pathname: "/SignIn",
+        });
       },
     });
   };

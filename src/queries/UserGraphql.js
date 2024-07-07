@@ -1,12 +1,21 @@
 import { gql, useMutation } from "@apollo/client";
 
-const CREATE_USER = gql`
+const MUTATION_USER_CREATE = gql`
   mutation userMutation($user: UserInput!) {
     createUser(user: $user) {
       first_name
     }
   }
 `;
+const MUTATION_USER_SIGN_IN = gql`
+  mutation signIn($emailAddress: String, $password: String) {
+    signIn(email_address: $emailAddress, password: $password) {
+      code
+      message
+    }
+  }
+`;
+/*
 const QUERY_USER = gql`
   query User($emailAddress: String, $password: String) {
     signIn(email_address: $emailAddress, password: $password) {
@@ -15,5 +24,5 @@ const QUERY_USER = gql`
     }
   }
 `;
-
-export { CREATE_USER, QUERY_USER };
+*/
+export { MUTATION_USER_CREATE, MUTATION_USER_SIGN_IN };

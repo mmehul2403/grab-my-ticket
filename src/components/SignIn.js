@@ -14,8 +14,8 @@ import Link from "@mui/material/Link";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Copyright from "./common/Copyright";
-import { QUERY_USER } from "../queries/UserGraphql";
-import { useLazyQuery } from "@apollo/client";
+import { MUTATION_USER_SIGN_IN } from "../queries/UserGraphql";
+import { useMutation } from "@apollo/client";
 
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import { useNavigate } from "react-router-dom";
@@ -24,41 +24,38 @@ const defaultTheme = createTheme();
 
 export default function SignInView() {
   const navigate = useNavigate();
-  const [signIn, { loading, error }] = useLazyQuery(QUERY_USER);
-  if (loading) return <p>Loading ...</p>;
-  if (error) return `Error! ${error}`;
+  const [signIn] = useMutation(MUTATION_USER_SIGN_IN);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    signIn({
+    const signInResponse = await signIn({
       variables: {
         emailAddress: formData.get("email_address"),
         password: formData.get("password"),
       },
-    }).then((resp) => {
-      const code = resp.data?.signIn?.code;
-      const message = resp.data?.signIn?.message;
-
-      if (0 === code) {
-        enqueueSnackbar("Sign in Succesfully!", {
-          variant: "success",
-          autoHideDuration: 1000,
-          onClose: () => {
-            navigate({
-              pathname: "/UserProfile",
-            });
-          },
-        });
-      } else {
-        enqueueSnackbar(message || "Failed", {
-          variant: "warning",
-          autoHideDuration: 1000,
-          onClose: () => {},
-        });
-      }
     });
+    const code = signInResponse.data?.signIn?.code;
+    const message = signInResponse.data?.signIn?.message;
+
+    if (0 === code) {
+      enqueueSnackbar("Sign in Succesfully!", {
+        variant: "success",
+        autoHideDuration: 1000,
+        onClose: () => {
+          navigate({
+            pathname: "/UserProfile",
+          });
+        },
+      });
+    } else {
+      enqueueSnackbar(message || "Failed", {
+        variant: "warning",
+        autoHideDuration: 1000,
+        onClose: () => {},
+      });
+    }
   };
 
   return (
