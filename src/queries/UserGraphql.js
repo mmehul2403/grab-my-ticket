@@ -15,14 +15,26 @@ const MUTATION_USER_SIGN_IN = gql`
     }
   }
 `;
-/*
-const QUERY_USER = gql`
-  query User($emailAddress: String, $password: String) {
-    signIn(email_address: $emailAddress, password: $password) {
+const MUTATION_USER_SIGN_OUT = gql`
+  mutation signOut {
+    signOut {
       code
       message
     }
   }
 `;
-*/
-export { MUTATION_USER_CREATE, MUTATION_USER_SIGN_IN };
+
+const QUERY_USER_CURRENT = gql`
+  query user {
+    currentUser {
+      user_id
+      first_name
+      last_name
+      date_of_birth
+      register_date
+      role
+    }
+  }
+`;
+
+export { MUTATION_USER_CREATE, MUTATION_USER_SIGN_IN, QUERY_USER_CURRENT, MUTATION_USER_SIGN_OUT };

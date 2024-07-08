@@ -44,6 +44,9 @@ export default function SignInView() {
         variant: "success",
         autoHideDuration: 1000,
         onClose: () => {
+          //TODO refresh nav component
+
+          //navigate to user profile
           navigate({
             pathname: "/UserProfile",
           });
