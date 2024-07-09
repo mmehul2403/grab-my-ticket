@@ -1,6 +1,6 @@
-// src/CreateMovieForm.js
-import React, { useState } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { CREATE_MOVIE_MUTATION } from "../../queries/CreateMovieQuery";
+import { useRef, useState } from "react";
+import { useMutation } from "@apollo/client";
 import {
   Box,
   TextField,
@@ -8,52 +8,91 @@ import {
   Typography,
   Container,
   CssBaseline,
-  Grid,
 } from "@mui/material";
+import Swal from "sweetalert2";
 
-const CREATE_MOVIE_MUTATION = gql`
-  mutation CreateMovie(
-    $movie_name: String!
-    $duration_seconds: Int
-    $release_date: Date
-    $review_score: Float
-    $image_url: String
-  ) {
-    createMovie(
-      movie_name: $movie_name
-      duration_seconds: $duration_seconds
-      release_date: $release_date
-      review_score: $review_score
-      image_url: $image_url
-    ) {
-      movie_id
-      movie_name
-    }
-  }
-`;
-
-const CreateMovieForm = () => {
+const CreateMovie = () => {
   const [movie_name, setMovieName] = useState("");
   const [duration_seconds, setDurationSeconds] = useState("");
   const [release_date, setReleaseDate] = useState("");
   const [review_score, setReviewScore] = useState("");
-  const [image_url, setImageUrl] = useState("");
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [formError, setFormError] = useState("");
 
-  const [createMovie, { data, loading, error }] = useMutation(
-    CREATE_MOVIE_MUTATION
-  );
+  const [createMovie, { loading, error }] = useMutation(CREATE_MOVIE_MUTATION);
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    createMovie({
-      variables: {
-        movie_name,
-        duration_seconds: parseInt(duration_seconds),
-        release_date,
-        review_score: parseFloat(review_score),
-        image_url,
-      },
-    });
+
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
+    }
+
+    setFormError("");
+
+    try {
+      const { data } = await createMovie({
+        variables: {
+          movie_name,
+          duration_seconds: parseInt(duration_seconds),
+          release_date,
+          review_score: parseFloat(review_score),
+          file,
+        },
+      });
+
+      if (data.movie_id != null || data.movie_id !== "") {
+        Swal.fire({
+          icon: "success",
+          title: "Movie added successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        setMovieName("");
+        setDurationSeconds("");
+        setReleaseDate("");
+        setReviewScore("");
+        setFile(null);
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } else {
+        setFormError(
+          error.message ||
+            "An unexpected error occurred. Please try again later."
+        );
+
+        Swal.fire({
+          icon: "error",
+          title: "Error adding movie",
+          text:
+            error.message ||
+            "An unexpected error occurred. Please try again later.",
+          showConfirmButton: true,
+        });
+      }
+    } catch (error) {
+      setFormError(
+        error.message || "An unexpected error occurred. Please try again later."
+      );
+
+      Swal.fire({
+        icon: "error",
+        title: "Error adding movie",
+        text:
+          error.message ||
+          "An unexpected error occurred. Please try again later.",
+        showConfirmButton: true,
+      });
+    }
   };
 
   return (
@@ -85,6 +124,7 @@ const CreateMovieForm = () => {
           />
           <TextField
             margin="normal"
+            required
             fullWidth
             id="duration_seconds"
             label="Duration (seconds)"
@@ -95,6 +135,7 @@ const CreateMovieForm = () => {
           />
           <TextField
             margin="normal"
+            required
             fullWidth
             id="release_date"
             label="Release Date"
@@ -106,6 +147,7 @@ const CreateMovieForm = () => {
           />
           <TextField
             margin="normal"
+            required
             fullWidth
             id="review_score"
             label="Review Score"
@@ -115,14 +157,11 @@ const CreateMovieForm = () => {
             value={review_score}
             onChange={(e) => setReviewScore(e.target.value)}
           />
-          <TextField
-            margin="normal"
-            fullWidth
-            id="image_url"
-            label="Image URL"
-            name="image_url"
-            value={image_url}
-            onChange={(e) => setImageUrl(e.target.value)}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
           />
           <Button
             type="submit"
@@ -133,14 +172,9 @@ const CreateMovieForm = () => {
           >
             Create Movie
           </Button>
-          {error && (
+          {formError && (
             <Typography color="error" variant="body2">
-              Error: {error.message}
-            </Typography>
-          )}
-          {data && (
-            <Typography color="primary" variant="body2">
-              Movie Created: {data.createMovie.movie_name}
+              Error: {formError}
             </Typography>
           )}
         </Box>
@@ -149,4 +183,4 @@ const CreateMovieForm = () => {
   );
 };
 
-export default CreateMovieForm;
+export default CreateMovie;

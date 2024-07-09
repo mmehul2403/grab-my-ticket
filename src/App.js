@@ -1,5 +1,4 @@
 import React from "react";
-import TestQuery from "./components/TestQuery";
 import AboutUs from "./components/AboutUs";
 import Home from "./components/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
