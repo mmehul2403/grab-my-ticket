@@ -10,8 +10,12 @@ const formatDuration = (seconds) => {
 const MovieList = ({ movie }) => {
   return (
     <div className="movie">
-      {/*       <img src={movie.image_url} alt={movie.movie_name} />
-       */}{" "}
+      {
+        <img
+          src={`http://localhost:4000/${movie.image_url}`}
+          alt={movie.movie_name}
+        />
+      }{" "}
       <h2>{movie.movie_name}</h2>
       <p>Duration: {formatDuration(movie.duration_seconds)}</p>
       <p>Release Date: {FormatDate(movie.release_date, "yyyy-MMM-dd")}</p>
