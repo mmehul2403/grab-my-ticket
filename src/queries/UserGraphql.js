@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 const MUTATION_USER_CREATE = gql`
   mutation userMutation($user: UserInput!) {
