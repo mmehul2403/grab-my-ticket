@@ -1,17 +1,13 @@
 import * as React from "react";
-// import { Button, Grid, TextField, MenuItem } from "@mui/material";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import DoneIcon from "@mui/icons-material/Done";
-// import { gql, useMutation } from "@apollo/client";
-// import dayjs from "dayjs";
-// import CinemaQuery from "../../../queries/CinemaGraphql.js";
+import { Button, Grid, TextField } from "@mui/material";
+import DoneIcon from "@mui/icons-material/Done";
+import { useMutation } from "@apollo/client";
+import { MUTATION_CINEMA_CREATE } from "../../../queries/CinemaGraphql.js";
 
 export default function CinemaCreate({ handleClose, refetch }) {
-  /*const [createCinema] = useMutation(CinemaQuery.MUTATION_CINEMA_CREATE, {
+  const [createCinema] = useMutation(MUTATION_CINEMA_CREATE, {
     onCompleted({ createCinema }) {
-      if (createCinema.code == -1) {
+      if (createCinema.code === 0) {
         let message = createCinema.message;
         if (message) {
           const fields = message.split(";");
@@ -21,8 +17,8 @@ export default function CinemaCreate({ handleClose, refetch }) {
             const fieldNameErrorMsg = currentField[1];
 
             switch (fieldName) {
-              case "firstName":
-                setFirstNameErrorMessage(fieldNameErrorMsg);
+              case "cinemaName":
+                setCinemaNameErrorMessage(fieldNameErrorMsg);
                 break;
 
               default:
@@ -37,20 +33,22 @@ export default function CinemaCreate({ handleClose, refetch }) {
       }
     },
   });
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [age, setAge] = React.useState(0);
+  const [cinemaName, setCinemaName] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [telephoneNumber, setTelephoneNumber] = React.useState("");
 
-  const [firstNameErrorMessage, setFirstNameErrorMessage] = React.useState("");
+  const [cinemaNameErrorMessage, setCinemaNameErrorMessage] = React.useState("");
+  const [addressErrorMessage, setAddressErrorMessage] = React.useState("");
+  const [telephoneNumberErrorMessage, setTelephoneNumberErrorMessage] = React.useState("");
   function onsubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const employee = Object.fromEntries(formData.entries());
+    const cinema = Object.fromEntries(formData.entries());
     let valid = true;
 
     if (valid) {
       // ADD_cinema
-      createCinema({ variables: { cinema: employee } });
+      createCinema({ variables: { cinema: cinema } });
     } else {
       return false;
     }
@@ -59,125 +57,47 @@ export default function CinemaCreate({ handleClose, refetch }) {
   return (
     <form onSubmit={onsubmit}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 3, sm: 4, md: 5 }} sx={{ mt: 2, pl: 2, pr: 2 }} direction="row">
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
-            id="firstName"
-            label="FirstName"
+            id="cinemaName"
+            label="CinemaName"
             variant="outlined"
-            name="firstName"
+            name="cinema_name"
             fullWidth
-            value={firstName}
-            error={!!firstNameErrorMessage}
-            helperText={firstNameErrorMessage}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={cinemaName}
+            error={!!cinemaNameErrorMessage}
+            helperText={cinemaNameErrorMessage}
+            onChange={(e) => setCinemaName(e.target.value)}
             margin="normal"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
-            id="lastName"
-            label="LastName"
+            id="cinema_address"
+            label="Cinema Address"
             variant="outlined"
-            name="lastName"
+            name="cinema_address"
             fullWidth
-            value={lastName}
-            error={!!lastNameErrorMessage}
-            helperText={lastNameErrorMessage}
-            onChange={(e) => setLastName(e.target.value)}
+            value={address}
+            error={!!addressErrorMessage}
+            helperText={addressErrorMessage}
+            onChange={(e) => setAddress(e.target.value)}
             margin="normal"
           />
         </Grid>
-        <Grid item xs={6}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              id="dateOfBirth"
-              label="dateOfBirth"
-              variant="outlined"
-              name="dateOfBirth"
-              fullWidth
-              value={dateofBirth}
-              error={!!dateOfBirthErrorMessage}
-              helperText={dateOfBirthErrorMessage}
-              sx={{ mt: 2 }}
-              format="YYYY-MM-DD"
-              slotProps={{
-                textField: {
-                  helperText: dateOfBirthErrorMessage,
-                },
-              }}
-              onChange={(newValue) => {
-                setAge(parseInt(dayjs().diff(newValue, "year")));
-              }}
-              defaultValue={dayjs().format("{YYYY-MM-DD}")}
-            />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
-            id="age"
-            label="Age"
+            id="telephone_number"
+            label="Telephone Number"
             variant="outlined"
-            name="age"
+            name="telephone_number"
             fullWidth
-            value={age}
-            error={!!ageErrorMessage}
-            helperText={ageErrorMessage}
-            onChange={(e) => setAge(e.target.value)}
+            value={telephoneNumber}
+            error={!!telephoneNumberErrorMessage}
+            helperText={telephoneNumberErrorMessage}
+            onChange={(e) => setTelephoneNumber(e.target.value)}
             margin="normal"
-            type="number"
-            InputProps={{
-              readOnly: true,
-            }}
           />
-        </Grid>
-        <Grid item xs={6}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              id="dateOfJoining"
-              label="DateOfJoining"
-              variant="outlined"
-              name="dateOfJoining"
-              fullWidth
-              value={dateOfJoining}
-              error={!!dateOfJoiningErrorMessage}
-              helperText={dateOfJoiningErrorMessage}
-              sx={{ mt: 2 }}
-              format="YYYY-MM-DD"
-              slotProps={{
-                textField: {
-                  helperText: dateOfJoiningErrorMessage,
-                },
-              }}
-              defaultValue={dayjs().format("{YYYY-MM-DD}")}
-            />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField fullWidth id="title" name="title" select label="title" defaultValue="Employee" margin="normal">
-            {Constant.titleDic.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField fullWidth id="department" name="department" select label="Department" defaultValue="IT" margin="normal">
-            {Constant.departmentDic.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item xs={6}>
-          <TextField fullWidth id="employeeType" name="employeeType" select label="EmployeeType" defaultValue="FullTime" margin="normal">
-            {Constant.employeeTypeDic.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
         </Grid>
 
         <Grid item xs={12} sx={{ mt: 3, mx: "auto" }} textAlign="center">
@@ -190,6 +110,5 @@ export default function CinemaCreate({ handleClose, refetch }) {
         </Grid>
       </Grid>
     </form>
-  );*/
-  return <div></div>;
+  );
 }

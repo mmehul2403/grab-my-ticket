@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 const MUTATION_CINEMA_CREATE = gql`
-  mutation createCinema($cinema: CinemaInput!) {
+  mutation createCinema($cinema: CinemaInputCreate!) {
     createCinema(cinema: $cinema) {
       code
       message
@@ -17,7 +17,7 @@ const MUTATION_CINEMA_DELETE = gql`
   }
 `;
 const MUTATION_CINEMA_UPDATE = gql`
-  mutation updateCinema($cinema: Cinema!) {
+  mutation updateCinema($cinema: CinemaInputUpdate!) {
     updateCinema(cinema: $cinema) {
       code
       message

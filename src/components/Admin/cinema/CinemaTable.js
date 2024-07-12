@@ -116,7 +116,9 @@ export default function CinemaTable({ rows, refetch }) {
       </form>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle textAlign="center">Add a Cinema</DialogTitle>
-        <DialogContent>{/* <CinemaCreate handleClose={handleClose} refetch={refetch} /> */}</DialogContent>
+        <DialogContent>
+          <CinemaCreate handleClose={handleClose} refetch={refetch} />
+        </DialogContent>
       </Dialog>
 
       <Dialog open={!!updateId} onClose={handleUpdateClose}>
