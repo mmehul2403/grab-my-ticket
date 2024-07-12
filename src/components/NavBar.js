@@ -1,16 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/NavBar.css";
-import {
-  QUERY_USER_CURRENT,
-  MUTATION_USER_SIGN_OUT,
-} from "../queries/UserGraphql";
-import { useQuery, useMutation } from "@apollo/client";
+import { QUERY_USER_CURRENT } from "../queries/UserGraphql";
+import { useQuery } from "@apollo/client";
 import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const NavBar = () => {
   const { data, loading } = useQuery(QUERY_USER_CURRENT);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <AppBar position="static">
