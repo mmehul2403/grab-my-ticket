@@ -12,7 +12,7 @@ import SignOut from "./components/SignOut";
 import UserProfile from "./components/UserProfile";
 
 import CreateMovie from "./components/Admin/CreateMovie";
-import CinemaLayout from "./components/Admin/cinema/CinemaLayout";
+import CinemaTable from "./components/Admin/cinema/CinemaTable";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
             <Route path="/UserProfile" element={<UserProfile />}></Route>
 
             <Route path="/CreateMovie" element={<CreateMovie />}></Route>
-            <Route path="/CinemaTable" element={<CinemaLayout />}></Route>
+            <Route path="/CinemaTable" element={<CinemaTable />}></Route>
           </Routes>
         </div>
       </Router>

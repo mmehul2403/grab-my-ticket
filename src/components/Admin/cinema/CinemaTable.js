@@ -1,6 +1,14 @@
 import * as React from "react";
+import { useState } from "react";
 
-import { Button, Grid } from "@mui/material";
+// import CinemaTable from "./CinemaTable.js";
+// import CinemaSearch from "./CinemaSearch.js";
+import { Button, Grid, TextField, MenuItem } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useQuery } from "@apollo/client";
+import { NetworkStatus } from "@apollo/client";
+import { useParams, useSearchParams } from "react-router-dom";
+import { QUERY_CINEMA_BY } from "../../../queries/CinemaGraphql.js";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
@@ -17,7 +25,6 @@ import Paper from "@mui/material/Paper";
 import { Outlet, Link } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 
-import { useSearchParams, createSearchParams } from "react-router-dom";
 import CinemaDelete from "./CinemaDelete.js";
 import CinemaUpdate from "./CinemaUpdate.js";
 import CinemaCreate from "./CinemaCreate.js";
@@ -28,15 +35,32 @@ const tableColumns = [
   { field: "cinema_address", headerName: "Address", width: 150 },
   { field: "telephone_number", headerName: "Telephone Number", width: 150 },
 ];
-export default function CinemaTable({ rows, refetch }) {
-  const [open, setOpen] = React.useState(false);
-  const [updateId, setUpdateId] = React.useState();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+export default function CinemaTable() {
+  //   let { userType } = useParams();
   let [searchParams, setSearchParams] = useSearchParams();
+  const [open, setOpen] = useState(false);
+  const [updateId, setUpdateId] = useState();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   let cinema_name = searchParams.get("cinema_name");
 
-  let params = {};
+  let params = {
+    cinema_name: cinema_name,
+  };
+
+  const { loading, error, data, refetch, networkStatus } = useQuery(QUERY_CINEMA_BY, {
+    variables: params,
+
+    notifyOnNetworkStatusChange: true,
+  });
+  if (networkStatus === NetworkStatus.refetch) return "Refetching!";
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
+
+  //   let [searchParams, setSearchParams] = useSearchParams();
+  //   let cinema_name = searchParams.get("cinema_name");
+
+  //   let params = {};
   if (cinema_name) {
     params.cinema_name = cinema_name;
   }
@@ -66,9 +90,22 @@ export default function CinemaTable({ rows, refetch }) {
   const handleUpdateClose = () => {
     setUpdateId("");
   };
-
   return (
-    <React.Fragment>
+    <div>
+      <form onSubmit={onsubmit}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
+          <Grid item xs={3} sx={{ mt: 2, minWidth: 200 }}>
+            <TextField id="search-form-name" label="Cinema Name" variant="outlined" name="firstName" />
+          </Grid>
+
+          <Grid item xs={3} sx={{ mt: 2, minWidth: 200 }}>
+            <Button variant="outlined" startIcon={<SearchIcon />} type="submit">
+              Search
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+
       <form name="searchForm">
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
           <Grid item xs={12}>
@@ -88,7 +125,7 @@ export default function CinemaTable({ rows, refetch }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {data.queryCinemaBy.map((row) => (
                     <TableRow key={row.cinema_id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       {tableColumns.map((column) => {
                         return <TableCell key={row.cinema_id + "_" + column.field}>{row[column.field]}</TableCell>;
@@ -107,7 +144,7 @@ export default function CinemaTable({ rows, refetch }) {
                 </TableBody>
               </Table>
             </TableContainer>
-            <TablePagination component="div" count={rows.length} page={page} onPageChange={handleChangePage} rowsPerPage={rowsPerPage} onRowsPerPageChange={handleChangeRowsPerPage} />
+            <TablePagination component="div" count={data.queryCinemaBy.length} page={page} onPageChange={handleChangePage} rowsPerPage={rowsPerPage} onRowsPerPageChange={handleChangeRowsPerPage} />
           </Grid>
           <Grid item xs={2}>
             <Outlet></Outlet>
@@ -125,6 +162,6 @@ export default function CinemaTable({ rows, refetch }) {
         <DialogTitle textAlign="center">Update a Cinema</DialogTitle>
         <DialogContent>{/* <CinemaUpdate handleClose={handleUpdateClose} refetch={refetch} id={updateId} /> */}</DialogContent>
       </Dialog>
-    </React.Fragment>
+    </div>
   );
 }
