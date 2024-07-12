@@ -1,31 +1,91 @@
 .about-us-container {
-  font-family: Arial, sans-serif;
   padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.header h1 {
-  font-size: 2.5em;
+.intro-section {
+  margin-bottom: 40px;
+}
+
+.info-card {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.7s ease, box-shadow 0.7s ease;
+  color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.info-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      135deg,
+      rgba(104, 104, 104, 0.329),
+      rgba(141, 141, 141, 0.5)
+    ),
+    url("/public/images/gradiant-bg.jpg") center/cover;
+  z-index: 1;
+}
+
+.info-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(73, 73, 73, 0.2);
+  transition: all 0.7s ease;
+}
+
+.info-card:hover::before {
+  filter: brightness(1.2);
+}
+
+.info-card .MuiCardContent-root {
+  position: relative;
+  z-index: 2;
+}
+
+h1,
+h2 {
   color: #333;
 }
 
-.section {
-  margin-bottom: 20px;
+a {
+  color: #007bff;
+  text-decoration: none;
 }
 
-.section h2 {
-  font-size: 2em;
-  color: #444;
+a:hover {
+  text-decoration: underline;
 }
 
-.section p {
-  font-size: 1.2em;
-  color: #666;
-  line-height: 1.6;
+.team .MuiGrid-root,
+.testimonials .MuiGrid-root,
+.faq .MuiBox-root {
+  display: flex;
+  justify-content: center;
+}
+
+.MuiCardMedia-root {
+  width: 100%;
+}
+
+.MuiCardContent-root {
+  text-align: center;
+}
+
+header,
+section {
+  padding: 20px;
+  background: white;
+
+  border-radius: 8px;
 }
