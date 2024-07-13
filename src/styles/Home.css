@@ -1,7 +1,13 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .landing-page-container {
   font-family: Arial, sans-serif;
   padding: 20px;
-  /* max-width: 1200px; */
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -21,13 +27,6 @@
   margin-bottom: 40px;
 }
 
-.movie-image {
-  width: 100%;
-  height: auto;
-  max-height: 600px;
-  object-fit: cover;
-}
-
 .content-section {
   margin-top: 20px;
 }
@@ -42,4 +41,82 @@
   font-size: 1.2em;
   color: #666;
   line-height: 1.6;
+}
+
+.recommended-movies {
+  margin-top: 2em;
+}
+
+/* .movie-card {
+  max-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+} */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 550px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+.movie-image-wrapper {
+  flex: 1;
+  max-height: 375px;
+  overflow: hidden;
+}
+
+.movie-image {
+  width: 100%;
+  height: 375px;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+.movie-banner-image {
+  height: auto;
+  width: 100%;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+.movie-content {
+  padding: 16px;
+  flex-shrink: 0;
+}
+
+.movie-card .movie-image {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.movie-card .MuiCardContent-root {
+  text-align: left;
+}
+
+.footer {
+  padding: 1em;
+  text-align: center;
+  background-color: #282c34;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .content-section {
+    padding: 10px;
+  }
+
+  .header h1 {
+    font-size: 2em;
+  }
+
+  .content-section h2 {
+    font-size: 1.5em;
+  }
+
+  .content-section p {
+    font-size: 1em;
+  }
 }
