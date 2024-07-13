@@ -1,14 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-
-// import CinemaTable from "./CinemaTable.js";
-// import CinemaSearch from "./CinemaSearch.js";
-import { Button, Grid, TextField, MenuItem } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
+import { Button, Grid, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@apollo/client";
 import { NetworkStatus } from "@apollo/client";
-import { useParams, useSearchParams } from "react-router-dom";
-import { QUERY_CINEMA_BY } from "../../../queries/CinemaGraphql.js";
+
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
@@ -22,23 +19,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Outlet, Link } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
-
+import IconButton from "@mui/material/IconButton";
 import CinemaDelete from "./CinemaDelete.js";
 import CinemaUpdate from "./CinemaUpdate.js";
 import CinemaCreate from "./CinemaCreate.js";
 import CinemaDetail from "./CinemaDetail.js";
-import IconButton from "@mui/material/IconButton";
+
 import { SnackbarProvider } from "notistack";
 
+import { QUERY_CINEMA_BY } from "../../../queries/CinemaGraphql.js";
 const tableColumns = [
   { field: "cinema_name", headerName: "Name", width: 150 },
   { field: "cinema_address", headerName: "Address", width: 150 },
   { field: "telephone_number", headerName: "Telephone Number", width: 150 },
 ];
 export default function CinemaTable() {
-  //   let { userType } = useParams();
   let [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
@@ -61,15 +57,9 @@ export default function CinemaTable() {
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
 
-  //   let [searchParams, setSearchParams] = useSearchParams();
-  //   let cinema_name = searchParams.get("cinema_name");
-
-  //   let params = {};
   if (cinema_name) {
     params.cinema_name = cinema_name;
   }
-
-  // let paramstr = `?${createSearchParams(params)}`;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -103,13 +93,21 @@ export default function CinemaTable() {
   const handleUpdateClose = () => {
     setUpdateId("");
   };
+  const onSearchFormSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const params = Object.fromEntries(formData.entries());
+
+    setSearchParams(params);
+  };
   return (
     <div>
       <SnackbarProvider>
-        <form onSubmit={onsubmit}>
+        <form onSubmit={onSearchFormSubmit}>
           <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
             <Grid item xs={3} sx={{ mt: 2, minWidth: 200 }}>
-              <TextField id="search-form-name" label="Cinema Name" variant="outlined" name="firstName" />
+              <TextField id="search-form-name" label="Cinema Name" variant="outlined" name="cinema_name" defaultValue={cinema_name} />
             </Grid>
 
             <Grid item xs={3} sx={{ mt: 2, minWidth: 200 }}>
@@ -120,52 +118,49 @@ export default function CinemaTable() {
           </Grid>
         </form>
 
-        <form name="searchForm">
-          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
-            <Grid item xs={12}>
-              <Button variant="outlined" startIcon={<AddIcon />} onClick={handleClickOpen}>
-                Add
-              </Button>
-            </Grid>
-            <Grid item xs={10}>
-              <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      {tableColumns.map((column) => {
-                        return <TableCell key={column.field}>{column.headerName}</TableCell>;
-                      })}
-                      <TableCell key="operations">Operations</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.queryCinemaBy.map((row) => (
-                      <TableRow key={row.cinema_id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                        {tableColumns.map((column) => {
-                          return <TableCell key={row.cinema_id + "_" + column.field}>{row[column.field]}</TableCell>;
-                        })}
-                        <TableCell>
-                          <IconButton color="primary" aria-label="view the cinema" onClick={handleDetailOpen} id={row.cinema_id} key={`btn-button-update-${row.cinema_id}`}>
-                            <ManageSearchIcon />
-                          </IconButton>
-
-                          <IconButton color="primary" aria-label="edit the cinema" onClick={handleUpdateClickOpen} key={`btn-button-update-${row.cinema_id}`} id={row.cinema_id}>
-                            <EditIcon />
-                          </IconButton>
-                          <CinemaDelete id={row.cinema_id} refetch={refetch}></CinemaDelete>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TablePagination component="div" count={data.queryCinemaBy.length} page={page} onPageChange={handleChangePage} rowsPerPage={rowsPerPage} onRowsPerPageChange={handleChangeRowsPerPage} />
-            </Grid>
-            <Grid item xs={2}>
-              <Outlet></Outlet>
-            </Grid>
+        {/* <form name="searchForm"> */}
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
+          <Grid item xs={12}>
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={handleClickOpen}>
+              Add
+            </Button>
           </Grid>
-        </form>
+          <Grid item xs={10}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    {tableColumns.map((column) => {
+                      return <TableCell key={column.field}>{column.headerName}</TableCell>;
+                    })}
+                    <TableCell key="operations">Operations</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.queryCinemaBy.map((row) => (
+                    <TableRow key={row.cinema_id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                      {tableColumns.map((column) => {
+                        return <TableCell key={row.cinema_id + "_" + column.field}>{row[column.field]}</TableCell>;
+                      })}
+                      <TableCell>
+                        <IconButton color="primary" aria-label="view the cinema" onClick={handleDetailOpen} id={row.cinema_id} key={`btn-button-detail-${row.cinema_id}`}>
+                          <ManageSearchIcon />
+                        </IconButton>
+
+                        <IconButton color="primary" aria-label="edit the cinema" onClick={handleUpdateClickOpen} key={`btn-button-update-${row.cinema_id}`} id={row.cinema_id}>
+                          <EditIcon />
+                        </IconButton>
+                        <CinemaDelete id={row.cinema_id} refetch={refetch}></CinemaDelete>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination component="div" count={data.queryCinemaBy.length} page={page} onPageChange={handleChangePage} rowsPerPage={rowsPerPage} onRowsPerPageChange={handleChangeRowsPerPage} />
+          </Grid>
+        </Grid>
+        {/* </form> */}
         <Dialog open={detailOpen} onClose={handleDetailClose}>
           <DialogTitle textAlign="center">Cinema Detail</DialogTitle>
           <DialogContent>
