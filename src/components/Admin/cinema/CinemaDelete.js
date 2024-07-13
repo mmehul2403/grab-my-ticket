@@ -20,7 +20,7 @@ export default function CinemaDelete({ id, refetch }) {
     setConfirmOpen(false);
 
     if (confirmed) {
-      deleteCinema({ variables: { id: deleteId } });
+      deleteCinema({ variables: { cinema_id: parseInt(deleteId) } });
     }
     setDeleteId();
   };
@@ -35,6 +35,7 @@ export default function CinemaDelete({ id, refetch }) {
       } else {
         enqueueSnackbar(message, {
           variant: "success",
+          autoHideDuration: 500,
           onClose: () => {
             // on close callback:reload data and close the dialog
             refetch();
@@ -45,7 +46,7 @@ export default function CinemaDelete({ id, refetch }) {
   });
   return (
     <React.Fragment>
-      <IconButton color="primary" aria-label="delete the employee" onClick={handleDelete} key={`btn-button-delete-${id}`} id={id}>
+      <IconButton color="primary" aria-label="delete the cinema" onClick={handleDelete} key={`btn-button-delete-${id}`} id={id}>
         <DeleteIcon />
       </IconButton>
       <ConfirmationDialogRaw id="ringtone-menu" keepMounted open={confirmOpen} onClose={handleConfirmClose} content="Are you sure to delete this row?" />

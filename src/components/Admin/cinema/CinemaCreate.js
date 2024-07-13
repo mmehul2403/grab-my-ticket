@@ -3,33 +3,27 @@ import { Button, Grid, TextField } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import { useMutation } from "@apollo/client";
 import { MUTATION_CINEMA_CREATE } from "../../../queries/CinemaGraphql.js";
+import { enqueueSnackbar } from "notistack";
 
 export default function CinemaCreate({ handleClose, refetch }) {
   const [createCinema] = useMutation(MUTATION_CINEMA_CREATE, {
     onCompleted({ createCinema }) {
-      if (createCinema.code === 0) {
+      if (createCinema.code === -1) {
         let message = createCinema.message;
         if (message) {
-          const fields = message.split(";");
-          fields.forEach((field) => {
-            const currentField = field.split(",");
-            const fieldName = currentField[0];
-            const fieldNameErrorMsg = currentField[1];
-
-            switch (fieldName) {
-              case "cinemaName":
-                setCinemaNameErrorMessage(fieldNameErrorMsg);
-                break;
-
-              default:
-                break;
-            }
-          });
+          enqueueSnackbar(message, { variant: "warning" });
         }
       } else {
         // reload data and close the dialog
-        refetch();
-        handleClose();
+        enqueueSnackbar("Create Successfully", {
+          variant: "success",
+          autoHideDuration: 500,
+          onClose: () => {
+            handleClose();
+            // on close callback:reload data and close the dialog
+            refetch();
+          },
+        });
       }
     },
   });
