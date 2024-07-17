@@ -9,6 +9,8 @@ import {
   TableRow,
   Paper,
   Button,
+  TableFooter,
+  TablePagination,
 } from "@mui/material";
 
 const GET_ALL_USERS = gql`
@@ -40,11 +42,11 @@ const UPDATE_USER_ROLE = gql`
 `;
 
 const UserList = () => {
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const limit = 10;
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_USERS, {
-    variables: { page: currentPage, limit },
+    variables: { page: currentPage + 1, limit: rowsPerPage },
   });
 
   const [updateUserRole] = useMutation(UPDATE_USER_ROLE);
@@ -62,6 +64,15 @@ const UserList = () => {
       .catch((err) => {
         console.error("Error updating user role:", err);
       });
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -110,6 +121,18 @@ const UserList = () => {
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              count={data.getAllUsers.totalCount}
+              rowsPerPage={rowsPerPage}
+              page={currentPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );
