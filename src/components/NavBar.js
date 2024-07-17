@@ -18,7 +18,12 @@ const NavBar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <Button color="inherit" component={Link} to="/" style={{ color: "white" }}>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/"
+            style={{ color: "white" }}
+          >
             GrabMyTicket
           </Button>
         </Typography>
@@ -39,6 +44,9 @@ const NavBar = () => {
         </Button>
         <Button color="inherit" component={Link} to="/contact">
           Contact Us
+        </Button>
+        <Button color="inherit" component={Link} to="/UserList">
+          Users
         </Button>
         {data?.currentUser ? (
           <Button color="inherit" component={Link} to="/SignOut">

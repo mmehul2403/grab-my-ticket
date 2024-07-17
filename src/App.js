@@ -14,6 +14,7 @@ import CreateMovie from "./components/Admin/CreateMovie";
 import CinemaTable from "./components/Admin/cinema/CinemaTable";
 import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
+import UserList from "./components/UserList";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/CreateMovie" element={<CreateMovie />}></Route>
             <Route path="/CinemaTable" element={<CinemaTable />}></Route>
+            <Route path="/UserList" element={<UserList />}></Route>
           </Routes>
         </div>
       </Router>
