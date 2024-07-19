@@ -19,10 +19,12 @@ import { useMutation } from "@apollo/client";
 
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./auth/AuthProvider";
 
 const defaultTheme = createTheme();
 
 export default function SignInView() {
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [signIn] = useMutation(MUTATION_USER_SIGN_IN);
 
@@ -44,11 +46,10 @@ export default function SignInView() {
         variant: "success",
         autoHideDuration: 1000,
         onClose: () => {
-          //TODO refresh nav component
-
+          setAuth(true);
           //navigate to user profile
           navigate({
-            pathname: "/UserProfile",
+            pathname: "/Movies",
           });
         },
       });

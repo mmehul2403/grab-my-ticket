@@ -7,7 +7,7 @@ import Movie from "./components/Movie";
 
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
-import SignOut from "./components/SignOut";
+// import SignOut from "./components/SignOut";
 import UserProfile from "./components/UserProfile";
 
 import CreateMovie from "./components/Admin/CreateMovie";
@@ -15,12 +15,16 @@ import CinemaTable from "./components/Admin/cinema/CinemaTable";
 import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
 import UserList from "./components/UserList";
+import { useAuth } from "./components/auth/AuthProvider";
+import GuestNavbar from "./components/GuestNavbar";
 
 function App() {
+  const { auth } = useAuth();
+
   return (
     <React.StrictMode>
       <Router>
-        <NavBar />
+        {auth ? <NavBar /> : <GuestNavbar />}
         <div className="App">
           <Routes>
             <Route path="/" element={<Home />}></Route>
@@ -29,7 +33,6 @@ function App() {
 
             <Route path="/SignIn" element={<SignIn />}></Route>
             <Route path="/SignUp" element={<SignUp />}></Route>
-            <Route path="/SignOut" element={<SignOut />}></Route>
             <Route path="/UserProfile" element={<UserProfile />}></Route>
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/CreateMovie" element={<CreateMovie />}></Route>
