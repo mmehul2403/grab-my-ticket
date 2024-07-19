@@ -47,7 +47,7 @@ export default function SignInView() {
         autoHideDuration: 1000,
         onClose: () => {
           setAuth(true);
-          //navigate to user profile
+          //navigate to movie list
           navigate({
             pathname: "/Movies",
           });

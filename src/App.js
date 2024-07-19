@@ -20,7 +20,7 @@ import GuestNavbar from "./components/GuestNavbar";
 
 function App() {
   const { auth } = useAuth();
-
+  console.log("App.js###" + auth);
   return (
     <React.StrictMode>
       <Router>

@@ -14,17 +14,24 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [currentUser, { loading, error, data }] = useLazyQuery(QUERY_USER_CURRENT);
   useEffect(() => {
-    const isAuth = async () => {
+    const checkAuth = async () => {
+      if (auth) return;
       try {
-        const res = currentUser();
-
-        setUser(res.currentUser);
+        const res = await currentUser();
+        if (res.data?.currentUser) {
+          setUser(res.data.currentUser);
+          setAuth(true);
+        } else {
+          setUser(null);
+          setAuth(false);
+        }
       } catch (error) {
         setUser(null);
+        setAuth(false);
       }
     };
 
-    isAuth();
+    checkAuth();
   }, [auth]);
 
   return <AuthContext.Provider value={{ auth, setAuth, user }}>{children}</AuthContext.Provider>;
