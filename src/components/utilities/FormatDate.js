@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 
-const FormatDate = (date, dateFormat) => {
+const FormatDate = (timestamp, dateFormat) => {
   try {
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate)) {
+    const parsedDate = new Date(Number(timestamp));
+    if (isNaN(parsedDate.getTime())) {
       throw new Error("Invalid date");
     }
     return format(parsedDate, dateFormat);
