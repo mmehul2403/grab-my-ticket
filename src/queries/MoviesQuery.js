@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_MOVIES = gql`
+const GET_MOVIES = gql`
   query GetMovies($page: Int!, $size: Int!) {
     movies(page: $page, size: $size) {
       movie_id
@@ -12,3 +12,20 @@ export const GET_MOVIES = gql`
     }
   }
 `;
+
+const QUERY_MOVIE_TOP8 = gql`
+  query getTop8Movies {
+    getTop8Movies {
+      duration_seconds
+      image_url
+      movie_id
+      movie_name
+      release_date
+      review_score
+      description
+      likes
+    }
+  }
+`;
+
+export { GET_MOVIES, QUERY_MOVIE_TOP8 };
