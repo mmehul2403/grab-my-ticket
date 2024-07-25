@@ -7,9 +7,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Button, Container, Typography, Grid, Card, CardContent, CardMedia } from "@mui/material";
 import { QUERY_MOVIE_TOP8 } from "../queries/MoviesQuery.js";
+import { useNavigate } from "react-router-dom";
 
 //Slider Setting
 const LandingPage = () => {
+  const navigate = useNavigate();
   const { loading, error, data, networkStatus } = useQuery(QUERY_MOVIE_TOP8);
   if (networkStatus === NetworkStatus.refetch) return "Refetching!";
   if (loading) return "Loading...";
@@ -22,6 +24,12 @@ const LandingPage = () => {
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
+  };
+
+  const navigateToCinemasPage = (event) => {
+    navigate({
+      pathname: "/Cinemas/" + event.currentTarget.id,
+    });
   };
 
   //Put movies image
@@ -92,6 +100,9 @@ const LandingPage = () => {
                     </Typography>
                   )}
                 </CardContent>
+                <Button variant="contained" onClick={navigateToCinemasPage} id={movie.movie_id}>
+                  Buy
+                </Button>
               </Card>
             </Grid>
           ))}

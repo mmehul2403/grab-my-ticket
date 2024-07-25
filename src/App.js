@@ -17,6 +17,7 @@ import Footer from "./components/Footer";
 import UserList from "./components/UserList";
 import { useAuth } from "./components/auth/AuthProvider";
 import GuestNavbar from "./components/GuestNavbar";
+import Cinemas from "./components/Cinemas";
 
 function App() {
   const { auth } = useAuth();
@@ -37,6 +38,7 @@ function App() {
             <Route path="/CreateMovie" element={<CreateMovie />}></Route>
             <Route path="/CinemaTable" element={<CinemaTable />}></Route>
             <Route path="/UserList" element={<UserList />}></Route>
+            <Route path="/Cinemas/:movie_id" element={<Cinemas />}></Route>
           </Routes>
         </div>
       </Router>
