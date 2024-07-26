@@ -51,8 +51,8 @@ const MUTATION_ORDER_CREATE = gql`
 `;
 
 const QUERY_ORDERS_BY_USER_ID = gql`
-  query GetOrdersByUserId($userId: Int!) {
-    getOrdersByUserId(user_id: $userId) {
+  query GetOrdersByUserId {
+    getOrdersByUserId {
       order_id
       ticket_num
       ticket_amount

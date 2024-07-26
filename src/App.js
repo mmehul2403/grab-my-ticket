@@ -19,6 +19,7 @@ import { useAuth } from "./components/auth/AuthProvider";
 import GuestNavbar from "./components/GuestNavbar";
 import Cinemas from "./components/order/Cinemas";
 import TicketBook from "./components/order/TicketBook";
+import UserOrders from "./components/order/UserOrders";
 
 function App() {
   const { auth } = useAuth();
@@ -41,6 +42,7 @@ function App() {
             <Route path="/UserList" element={<UserList />}></Route>
             <Route path="/Cinemas/:movie_id" element={<Cinemas />}></Route>
             <Route path="/Book/:showtime_id" element={<TicketBook />}></Route>
+            <Route path="/UserOrders" element={<UserOrders />}></Route>
           </Routes>
         </div>
       </Router>
