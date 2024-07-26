@@ -3,13 +3,23 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 // import { QUERY_CINEMAS } from "../queries/CinemaGraphql";
 import { useParams } from "react-router-dom";
-import { QUERY_CINEMAS_SHOWTIME } from "../queries/CinemaGraphql.js";
-import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
+
+import { useNavigate } from "react-router-dom";
+import { QUERY_CINEMAS_SHOWTIME } from "../../queries/CinemaGraphql.js";
+import { Box, Button, Card, CardContent, Container, Grid, Typography } from "@mui/material";
 const Cinemas = () => {
+  const navigate = useNavigate();
   let { movie_id } = useParams();
   const { loading, error, data } = useQuery(QUERY_CINEMAS_SHOWTIME, { variables: { movie_id: parseInt(movie_id) } });
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
+  const navigateToBookPage = (event) => {
+    // debugger;
+    console.log(event.currentTarget.id);
+    navigate({
+      pathname: "/Book/" + event.currentTarget.id,
+    });
+  };
   return (
     <Container>
       <Grid container spacing={3} justifyContent="center">
@@ -25,7 +35,7 @@ const Cinemas = () => {
                 </Typography>
                 {cinema.show_times.map((show_time, index) => (
                   <Box columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2, display: "inline" }}>
-                    <Button variant="outlined" show-time-id={show_time.show_time_id}>
+                    <Button variant="outlined" id={show_time.show_time_id} onClick={navigateToBookPage}>
                       {show_time.show_start_time}
                     </Button>
                   </Box>

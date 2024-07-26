@@ -128,5 +128,24 @@ const QUERY_CINEMAS_SHOWTIME = gql`
     }
   }
 `;
+const QUERY_SHOWTIME_BY_ID = gql`
+  query getShowTimeDetailById($showtime_id: Int!) {
+    getShowTimeDetailById(showtime_id: $showtime_id) {
+      show_time_id
+      show_date
+      show_start_time
+      show_end_time
+      ticket_price
 
-export { MUTATION_CINEMA_CREATE, MUTATION_CINEMA_DELETE, MUTATION_CINEMA_UPDATE, QUERY_CINEMAS, QUERY_CINEMA_BY_ID, QUERY_CITIES, QUERY_PROVINCES, QUERY_CINEMAS_SHOWTIME };
+      seat_count
+      cinema {
+        cinema_id
+        cinema_name
+        cinema_address
+        telephone_number
+      }
+    }
+  }
+`;
+
+export { MUTATION_CINEMA_CREATE, MUTATION_CINEMA_DELETE, MUTATION_CINEMA_UPDATE, QUERY_CINEMAS, QUERY_CINEMA_BY_ID, QUERY_CITIES, QUERY_PROVINCES, QUERY_CINEMAS_SHOWTIME, QUERY_SHOWTIME_BY_ID };
