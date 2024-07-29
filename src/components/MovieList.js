@@ -25,7 +25,7 @@ const MovieList = ({ movie }) => {
           Duration: {formatDuration(movie.duration_seconds)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Release Date: {FormatDate(movie.release_date, 'yyyy-MMM-dd')}
+          Release Date : {FormatDate(movie.release_date, 'yyyy-MMM-dd')}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Review Score: {movie.review_score} / 5
