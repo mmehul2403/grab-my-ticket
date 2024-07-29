@@ -5,7 +5,7 @@ import { NetworkStatus } from "@apollo/client";
 import "../styles/Home.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Button, Container, Typography, Grid, Card, CardContent, CardMedia } from "@mui/material";
+import { Button, Container, Typography, Grid, Card, CardContent, CardMedia, Box } from "@mui/material";
 import { QUERY_MOVIE_TOP8 } from "../queries/MoviesQuery.js";
 import { useNavigate } from "react-router-dom";
 
@@ -77,11 +77,15 @@ const LandingPage = () => {
         <Grid container spacing={3} justifyContent="center">
           {data.getTop8Movies.map((movie, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-              <Card className="movie-card">
-                <div className="movie-image-wrapper">
-                  <CardMedia className="movie-image" image={movie.image_url} title={movie.movie_name} />
-                </div>
-                <CardContent className="movie-content">
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="350"
+                  image={`http://localhost:4000/${movie.image_url}`}
+                  alt={movie.movie_name}
+                />
+
+                <CardContent>
                   <Typography variant="h6" component="div">
                     {movie.movie_name}
                   </Typography>
@@ -90,24 +94,81 @@ const LandingPage = () => {
                   </Typography>
                   {movie.likes && (
                     <Typography variant="body2" color="text.secondary">
-                      LIKES:{movie.likes}
+                      Likes: {movie.likes}
                     </Typography>
                   )}
-
                   {movie.review_score && (
                     <Typography variant="body2" color="text.secondary">
-                      REVIEW SCORE:{movie.review_score}
+                      Review Score: {movie.review_score}
                     </Typography>
                   )}
                 </CardContent>
-                <Button variant="contained" onClick={navigateToCinemasPage} id={movie.movie_id}>
-                  Buy
-                </Button>
+                <Box p={2} display="flex" justifyContent="center">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={navigateToCinemasPage}
+                    id={movie.movie_id}
+                  >
+                    Buy
+                  </Button>
+                </Box>
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
+
+      <section className="popular-categories" style={{ marginTop: '40px' }}>
+        <Container>
+          <Typography variant="h4" gutterBottom>
+            Popular Categories
+          </Typography>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="350"
+                  image="https://m.media-amazon.com/images/M/MV5BYTYyODhlODktYjUzNC00NjUyLWI1MzYtNmI0MTY3YTUxYjY2XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg"
+                  alt="Action"
+                />
+
+                
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    Action
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    High-octane thrillers and adrenaline-pumping movies.
+                  </Typography>
+                </CardContent>
+                <Box p={2} display="flex" justifyContent="center">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => navigate('/categories/action')}
+                  >
+                    Explore
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
+            {/* Add more categories as needed */}
+          </Grid>
+        </Container>
+      </section>
+      <footer className="footer" style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f5f5f5' }}>
+        <Container>
+          <Typography variant="body1" align="center">
+            © 2024 GrabMyTicket. All rights reserved.
+          </Typography>
+        </Container>
+      </footer>
+
+
+
+
     </div>
   );
 };
