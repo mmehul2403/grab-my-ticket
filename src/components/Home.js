@@ -78,7 +78,7 @@ const LandingPage = () => {
           {data.getTop8Movies.map((movie, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
               <Card>
-                <CardMedia component="img" height="350" image={`./${movie.image_url}`} alt={movie.movie_name} />
+                <CardMedia component="img" height="350" image={`http://localhost:4000/${movie.image_url}`} alt={movie.movie_name} />
 
                 <CardContent>
                   <Typography variant="h6" component="div">

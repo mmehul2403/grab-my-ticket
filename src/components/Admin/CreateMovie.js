@@ -1,14 +1,7 @@
 import { CREATE_MOVIE_MUTATION } from "../../queries/CreateMovieQuery";
 import { useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Container,
-  CssBaseline,
-} from "@mui/material";
+import { Box, TextField, Button, Typography, Container, CssBaseline } from "@mui/material";
 import Swal from "sweetalert2";
 
 const CreateMovie = () => {
@@ -19,6 +12,10 @@ const CreateMovie = () => {
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
   const [formError, setFormError] = useState("");
+
+  //, description: String, likes: Int
+  const [description, setDescription] = useState("");
+  const [likes, setLikes] = useState(0);
 
   const [createMovie, { loading, error }] = useMutation(CREATE_MOVIE_MUTATION);
 
@@ -44,6 +41,8 @@ const CreateMovie = () => {
           release_date,
           review_score: parseFloat(review_score),
           file,
+          description,
+          likes: parseInt(likes),
         },
       });
 
@@ -60,36 +59,29 @@ const CreateMovie = () => {
         setReleaseDate("");
         setReviewScore("");
         setFile(null);
+        setDescription("");
+        setLikes(0);
 
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
       } else {
-        setFormError(
-          error.message ||
-            "An unexpected error occurred. Please try again later."
-        );
+        setFormError(error.message || "An unexpected error occurred. Please try again later.");
 
         Swal.fire({
           icon: "error",
           title: "Error adding movie",
-          text:
-            error.message ||
-            "An unexpected error occurred. Please try again later.",
+          text: error.message || "An unexpected error occurred. Please try again later.",
           showConfirmButton: true,
         });
       }
     } catch (error) {
-      setFormError(
-        error.message || "An unexpected error occurred. Please try again later."
-      );
+      setFormError(error.message || "An unexpected error occurred. Please try again later.");
 
       Swal.fire({
         icon: "error",
         title: "Error adding movie",
-        text:
-          error.message ||
-          "An unexpected error occurred. Please try again later.",
+        text: error.message || "An unexpected error occurred. Please try again later.",
         showConfirmButton: true,
       });
     }
@@ -104,8 +96,7 @@ const CreateMovie = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-        }}
-      >
+        }}>
         <Typography component="h1" variant="h5">
           Create Movie
         </Typography>
@@ -157,19 +148,11 @@ const CreateMovie = () => {
             value={review_score}
             onChange={(e) => setReviewScore(e.target.value)}
           />
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={loading}
-          >
+          <TextField margin="normal" fullWidth id="description" label="Description" name="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+          <TextField margin="normal" fullWidth id="likes" label="Likes" name="likes" type="number" step="0.1" value={likes} onChange={(e) => setLikes(e.target.value)} />
+          <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} />
+
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading}>
             Create Movie
           </Button>
           {formError && (

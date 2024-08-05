@@ -11,7 +11,7 @@ const formatDuration = (seconds) => {
 const MovieList = ({ movie }) => {
   return (
     <Card sx={{ maxWidth: 345, borderRadius: 2, boxShadow: 3 }}>
-      <CardMedia component="img" height="350" image={`./${movie.image_url}`} alt={movie.movie_name} />
+      <CardMedia component="img" height="350" image={`http://localhost:4000/${movie.image_url}`} alt={movie.movie_name} />
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
           {movie.movie_name}
