@@ -48,30 +48,29 @@ const NavBar = () => {
         <Button color="inherit" component={Link} to="/Movies">
           Movies
         </Button>
-        <Button color="inherit" component={Link} to="/CreateMovie">
-          Add Movie
-        </Button>
-        <Button color="inherit" component={Link} to="/CinemaTable">
-          Cinemas
-        </Button>
+        {user && user.role === "Admin" && (
+          <div>
+            <Button color="inherit" component={Link} to="/CreateMovie">
+              Add Movie
+            </Button>
+            <Button color="inherit" component={Link} to="/CinemaTable">
+              Cinemas
+            </Button>
+            <Button color="inherit" component={Link} to="/UserList">
+              Users
+            </Button>
+          </div>
+        )}
         <Button color="inherit" component={Link} to="/AboutUs">
           About Us
         </Button>
         <Button color="inherit" component={Link} to="/contact">
           Contact Us
         </Button>
-        <Button color="inherit" component={Link} to="/UserList">
-          Users
-        </Button>
-        {/* {data?.currentUser ? ( */}
+
         <Button color="inherit" onClick={logout}>
           Sign Out
         </Button>
-        {/* ) : (
-          <Button color="inherit" component={Link} to="/SignIn">
-            Sign In
-          </Button>
-        )} */}
       </Toolbar>
     </AppBar>
   );
