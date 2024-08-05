@@ -78,12 +78,7 @@ const LandingPage = () => {
           {data.getTop8Movies.map((movie, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
               <Card>
-                <CardMedia
-                  component="img"
-                  height="350"
-                  image={`http://localhost:4000/${movie.image_url}`}
-                  alt={movie.movie_name}
-                />
+                <CardMedia component="img" height="350" image={`./${movie.image_url}`} alt={movie.movie_name} />
 
                 <CardContent>
                   <Typography variant="h6" component="div">
@@ -104,12 +99,7 @@ const LandingPage = () => {
                   )}
                 </CardContent>
                 <Box p={2} display="flex" justifyContent="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={navigateToCinemasPage}
-                    id={movie.movie_id}
-                  >
+                  <Button variant="contained" color="primary" onClick={navigateToCinemasPage} id={movie.movie_id}>
                     Buy
                   </Button>
                 </Box>
@@ -119,7 +109,7 @@ const LandingPage = () => {
         </Grid>
       </Container>
 
-      <section className="popular-categories" style={{ marginTop: '40px' }}>
+      <section className="popular-categories" style={{ marginTop: "40px" }}>
         <Container>
           <Typography variant="h4" gutterBottom>
             Popular Categories
@@ -134,7 +124,6 @@ const LandingPage = () => {
                   alt="Action"
                 />
 
-                
                 <CardContent>
                   <Typography variant="h6" component="div">
                     Action
@@ -144,11 +133,7 @@ const LandingPage = () => {
                   </Typography>
                 </CardContent>
                 <Box p={2} display="flex" justifyContent="center">
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => navigate('/categories/action')}
-                  >
+                  <Button variant="contained" color="secondary" onClick={() => navigate("/categories/action")}>
                     Explore
                   </Button>
                 </Box>
@@ -158,17 +143,13 @@ const LandingPage = () => {
           </Grid>
         </Container>
       </section>
-      <footer className="footer" style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f5f5f5' }}>
+      <footer className="footer" style={{ marginTop: "40px", padding: "20px", backgroundColor: "#f5f5f5" }}>
         <Container>
           <Typography variant="body1" align="center">
             © 2024 GrabMyTicket. All rights reserved.
           </Typography>
         </Container>
       </footer>
-
-
-
-
     </div>
   );
 };

@@ -112,8 +112,8 @@ const QUERY_PROVINCES = gql`
   }
 `;
 const QUERY_CINEMAS_SHOWTIME = gql`
-  query getShowTimeByMovieId($movie_id: Int!) {
-    getShowTimeByMovieId(movie_id: $movie_id) {
+  query getShowTimeByMovieId($movie_id: Int!, $queryDate: String!) {
+    getShowTimeByMovieId(movie_id: $movie_id, queryDate: $queryDate) {
       cinema_id
       cinema_name
       cinema_address
