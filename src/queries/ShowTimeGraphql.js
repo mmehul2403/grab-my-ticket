@@ -39,8 +39,8 @@ const MUTATION_SHOWTIME_UPDATE = gql`
 
 // Query to fetch all showtime of a cinema
 const QUERY_SHOWTIMES = gql`
-  query GetShowTimeByCinemaId($cinemaId: Int!, $page: Int, $size: Int) {
-    getShowTimeByCinemaId(cinema_id: $cinemaId, page: $page, size: $size) {
+  query GetShowTimeByCinemaId($cinemaId: Int!, $page: Int, $size: Int, $movieId: Int, $showDate: String) {
+    getShowTimeByCinemaId(cinema_id: $cinemaId, page: $page, size: $size, movie_id: $movieId, show_date: $showDate) {
       show_time_id
       seat_count
       ticket_price
