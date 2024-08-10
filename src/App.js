@@ -20,6 +20,7 @@ import GuestNavbar from "./components/GuestNavbar";
 import Cinemas from "./components/order/Cinemas";
 import TicketBook from "./components/order/TicketBook";
 import UserOrders from "./components/order/UserOrders";
+import ShowTimeTable from "./components/Admin/showtime/ShowTimeTable";
 
 function App() {
   const { auth } = useAuth();
@@ -43,6 +44,7 @@ function App() {
             <Route path="/Cinemas/:movie_id" element={<Cinemas />}></Route>
             <Route path="/Book/:showtime_id" element={<TicketBook />}></Route>
             <Route path="/UserOrders" element={<UserOrders />}></Route>
+            <Route path="/ShowTimes/:cinema_id" element={<ShowTimeTable />}></Route>
           </Routes>
         </div>
       </Router>
