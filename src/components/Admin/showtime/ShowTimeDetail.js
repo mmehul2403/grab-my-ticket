@@ -32,7 +32,7 @@ export default function ShowTimeDetail({ id, handleClose }) {
   ) : (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 3, sm: 4, md: 5 }} sx={{ mt: 2, pl: 2, pr: 2 }} direction="row">
       <Grid item xs={6}>
-        <TextField id="show_date" label="Show Date" variant="outlined" fullWidth defaultValue={moment(parseInt(showTimeData.show_date)).format("YYYY-MM-DD")} margin="normal" />
+        <TextField id="show_date" label="Show Date" variant="outlined" fullWidth defaultValue={moment(parseInt(showTimeData.show_date)).add("hours", 8).format("YYYY-MM-DD")} margin="normal" />
       </Grid>
       <Grid item xs={6}>
         <TextField id="show_start_time" label="Start Time" variant="outlined" fullWidth defaultValue={showTimeData.show_start_time} margin="normal" />

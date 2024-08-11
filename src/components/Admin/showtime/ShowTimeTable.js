@@ -23,7 +23,6 @@ import IconButton from "@mui/material/IconButton";
 import { SnackbarProvider } from "notistack";
 import { QUERY_SHOWTIMES } from "../../../queries/ShowTimeGraphql.js"; // Correct import
 import ShowTimeDetail from "./ShowTimeDetail.js";
-import moment from "moment/moment.js";
 import ShowTimeDelete from "./ShowTimeDelete.js";
 import ShowTimeCreate from "./ShowTimeCreate.js";
 import ShowTimeUpdate from "./ShowTimeUpdate.js";
@@ -31,8 +30,8 @@ import ShowTimeUpdate from "./ShowTimeUpdate.js";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
 import { QUERY_MOVIES_SELECT } from "../../../queries/MoviesQuery.js";
+import momentTimeZone from "moment-timezone";
 const tableColumns = [
   // { field: "show_date", headerName: "Show Date", width: 150 },
   { field: "show_start_time", headerName: "Start Time", width: 150 },
@@ -139,7 +138,6 @@ export default function ShowTimeTable() {
                     setShowDateVal(newValue);
                   }}
                   renderInput={(params) => <TextField {...params} />}
-                  inputFormat="YYYY-MM-DD"
                 />
               </LocalizationProvider>
             </Grid>
@@ -185,7 +183,7 @@ export default function ShowTimeTable() {
                 <TableBody>
                   {data.getShowTimeByCinemaId.map((row) => (
                     <TableRow key={row.show_time_id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                      <TableCell key={row.show_time_id + "_show_date"}>{moment(parseInt(row.show_date)).format("YYYY-MM-DD")}</TableCell>
+                      <TableCell key={row.show_time_id + "_show_date"}>{momentTimeZone.tz(parseInt(row.show_date), "Asia/Shanghai").format("YYYY-MM-DD")}</TableCell>
                       {tableColumns.map((column) => {
                         return <TableCell key={row.show_time_id + "_" + column.field}>{row[column.field]}</TableCell>;
                       })}
