@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Grid, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@apollo/client";
@@ -25,6 +25,7 @@ import CinemaUpdate from "./CinemaUpdate.js";
 import CinemaCreate from "./CinemaCreate.js";
 import CinemaDetail from "./CinemaDetail.js";
 import { SnackbarProvider } from "notistack";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { QUERY_CINEMAS } from "../../../queries/CinemaGraphql.js"; // Correct import
 
 const tableColumns = [
@@ -36,6 +37,7 @@ const tableColumns = [
 ];
 
 export default function CinemaTable() {
+  const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
@@ -49,13 +51,10 @@ export default function CinemaTable() {
     cinema_name: cinema_name,
   };
 
-  const { loading, error, data, refetch, networkStatus } = useQuery(
-    QUERY_CINEMAS,
-    {
-      variables: params,
-      notifyOnNetworkStatusChange: true,
-    }
-  );
+  const { loading, error, data, refetch, networkStatus } = useQuery(QUERY_CINEMAS, {
+    variables: params,
+    notifyOnNetworkStatusChange: true,
+  });
 
   if (networkStatus === NetworkStatus.refetch) return "Refetching!";
   if (loading) return "Loading...";
@@ -107,49 +106,29 @@ export default function CinemaTable() {
     setSearchParams(params);
   };
 
+  const handleShowTimeClickOpen = (event) => {
+    navigate(`/ShowTimes/${event.currentTarget.id}`);
+  };
+
   return (
     <div>
       <SnackbarProvider>
         <form onSubmit={onSearchFormSubmit}>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            sx={{ mt: 2, pl: 2, pr: 2 }}
-          >
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
             <Grid item xs={3} sx={{ mt: 2, minWidth: 200 }}>
-              <TextField
-                id="search-form-name"
-                label="Cinema Name"
-                variant="outlined"
-                name="cinema_name"
-                defaultValue={cinema_name}
-              />
+              <TextField id="search-form-name" label="Cinema Name" variant="outlined" name="cinema_name" defaultValue={cinema_name} />
             </Grid>
             <Grid item xs={3} sx={{ mt: 2, minWidth: 200 }}>
-              <Button
-                variant="outlined"
-                startIcon={<SearchIcon />}
-                type="submit"
-              >
+              <Button variant="outlined" startIcon={<SearchIcon />} type="submit">
                 Search
               </Button>
             </Grid>
           </Grid>
         </form>
 
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          sx={{ mt: 2, pl: 2, pr: 2 }}
-        >
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 2, pl: 2, pr: 2 }}>
           <Grid item xs={12}>
-            <Button
-              variant="outlined"
-              startIcon={<AddIcon />}
-              onClick={handleClickOpen}
-            >
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={handleClickOpen}>
               Add
             </Button>
           </Grid>
@@ -159,63 +138,37 @@ export default function CinemaTable() {
                 <TableHead>
                   <TableRow>
                     {tableColumns.map((column) => (
-                      <TableCell key={column.field}>
-                        {column.headerName}
-                      </TableCell>
+                      <TableCell key={column.field}>{column.headerName}</TableCell>
                     ))}
                     <TableCell key="operations">Operations</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.cinemas.map((row) => (
-                    <TableRow
-                      key={row.cinema_id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                    <TableRow key={row.cinema_id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell>{row.cinema_name}</TableCell>
                       <TableCell>{row.cinema_address}</TableCell>
                       <TableCell>{row.telephone_number}</TableCell>
                       <TableCell>{row.city?.city_name || "N/A"}</TableCell>
+                      <TableCell>{row.province?.province_name || "N/A"}</TableCell>
                       <TableCell>
-                        {row.province?.province_name || "N/A"}
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          color="primary"
-                          aria-label="view the cinema"
-                          onClick={handleDetailOpen}
-                          id={row.cinema_id}
-                          key={`btn-button-detail-${row.cinema_id}`}
-                        >
+                        <IconButton color="primary" aria-label="view the cinema" onClick={handleDetailOpen} id={row.cinema_id} key={`btn-button-detail-${row.cinema_id}`}>
                           <ManageSearchIcon />
                         </IconButton>
-                        <IconButton
-                          color="primary"
-                          aria-label="edit the cinema"
-                          onClick={handleUpdateClickOpen}
-                          key={`btn-button-update-${row.cinema_id}`}
-                          id={row.cinema_id}
-                        >
+                        <IconButton color="primary" aria-label="edit the cinema" onClick={handleUpdateClickOpen} key={`btn-button-update-${row.cinema_id}`} id={row.cinema_id}>
                           <EditIcon />
                         </IconButton>
-                        <CinemaDelete
-                          id={row.cinema_id}
-                          refetch={refetch}
-                        ></CinemaDelete>
+                        <CinemaDelete id={row.cinema_id} refetch={refetch}></CinemaDelete>
+                        <IconButton color="primary" aria-label="ShowTimes" onClick={handleShowTimeClickOpen} key={`btn-button-showtimes-${row.cinema_id}`} id={row.cinema_id}>
+                          <DragIndicatorIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <TablePagination
-              component="div"
-              count={data.cinemas.length}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            <TablePagination component="div" count={data.cinemas.length} page={page} onPageChange={handleChangePage} rowsPerPage={rowsPerPage} onRowsPerPageChange={handleChangeRowsPerPage} />
           </Grid>
         </Grid>
         <Dialog open={detailOpen} onClose={handleDetailClose}>
@@ -233,11 +186,7 @@ export default function CinemaTable() {
         <Dialog open={!!updateId} onClose={handleUpdateClose}>
           <DialogTitle textAlign="center">Update a Cinema</DialogTitle>
           <DialogContent>
-            <CinemaUpdate
-              handleClose={handleUpdateClose}
-              refetch={refetch}
-              id={updateId}
-            />
+            <CinemaUpdate handleClose={handleUpdateClose} refetch={refetch} id={updateId} />
           </DialogContent>
         </Dialog>
       </SnackbarProvider>

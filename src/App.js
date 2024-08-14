@@ -21,6 +21,7 @@ import Cinemas from "./components/order/Cinemas";
 import TicketBook from "./components/order/TicketBook";
 import UserOrders from "./components/order/UserOrders";
 import UserOrderHistory from "./components/order/UserOrderHistory";
+import ShowTimeTable from "./components/Admin/showtime/ShowTimeTable";
 
 function App() {
   const { auth, user } = useAuth();
@@ -48,6 +49,10 @@ function App() {
             <Route
               path="/UserOrderHistory"
               element={<UserOrderHistory userId={userId} />}
+            ></Route>
+            <Route
+              path="/ShowTimes/:cinema_id"
+              element={<ShowTimeTable />}
             ></Route>
           </Routes>
         </div>

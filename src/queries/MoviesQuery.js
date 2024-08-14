@@ -12,6 +12,15 @@ const GET_MOVIES = gql`
     }
   }
 `;
+//USED FOR SELECT-OPTIONS
+const QUERY_MOVIES_SELECT = gql`
+  query moviesOptions {
+    moviesOptions {
+      movie_id
+      movie_name
+    }
+  }
+`;
 
 const QUERY_MOVIE_TOP8 = gql`
   query getTop8Movies {
@@ -28,4 +37,4 @@ const QUERY_MOVIE_TOP8 = gql`
   }
 `;
 
-export { GET_MOVIES, QUERY_MOVIE_TOP8 };
+export { GET_MOVIES, QUERY_MOVIE_TOP8, QUERY_MOVIES_SELECT };
