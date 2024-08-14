@@ -16,7 +16,6 @@ const NavBar = () => {
   const { data, loading } = useQuery(QUERY_USER_CURRENT);
   const [signOut] = useMutation(MUTATION_USER_SIGN_OUT);
   const navigate = useNavigate();
-
   const logout = async () => {
     const resp = await signOut();
 
@@ -38,7 +37,12 @@ const NavBar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <Button color="inherit" component={Link} to="/" style={{ color: "white" }}>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/"
+            style={{ color: "white" }}
+          >
             GrabMyTicket
           </Button>
         </Typography>
@@ -48,6 +52,7 @@ const NavBar = () => {
         <Button color="inherit" component={Link} to="/Movies">
           Movies
         </Button>
+
         {user && user.role === "Admin" && (
           <div>
             <Button color="inherit" component={Link} to="/CreateMovie">
@@ -61,13 +66,15 @@ const NavBar = () => {
             </Button>
           </div>
         )}
+        <Button color="inherit" component={Link} to="/UserOrderHistory">
+          Order History
+        </Button>
         <Button color="inherit" component={Link} to="/AboutUs">
           About Us
         </Button>
         <Button color="inherit" component={Link} to="/contact">
           Contact Us
         </Button>
-
         <Button color="inherit" onClick={logout}>
           Sign Out
         </Button>

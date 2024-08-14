@@ -12,7 +12,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Copyright from "./common/Copyright";
-// import bcrypt from "bcrypt";
 import bcrypt from "bcryptjs-react";
 import { MUTATION_USER_CREATE } from "../queries/UserGraphql";
 import { useMutation } from "@apollo/client";
@@ -65,29 +64,70 @@ export default function SignUp() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-            }}>
+            }}
+          >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
+            >
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField autoComplete="given-name" name="first_name" required fullWidth id="firstName" label="First Name" autoFocus />
+                  <TextField
+                    autoComplete="given-name"
+                    name="first_name"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField required fullWidth id="last_name" label="Last Name" name="last_name" autoComplete="family-name" />
+                  <TextField
+                    required
+                    fullWidth
+                    id="last_name"
+                    label="Last Name"
+                    name="last_name"
+                    autoComplete="family-name"
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField required fullWidth id="email_address" label="Email Address" name="email_address" autoComplete="email" />
+                  <TextField
+                    required
+                    fullWidth
+                    id="email_address"
+                    label="Email Address"
+                    name="email_address"
+                    autoComplete="email"
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField required fullWidth name="password" label="Password" type="password" id="password" autoComplete="new-password" />
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                  />
                 </Grid>
               </Grid>
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
                 Sign Up
               </Button>
               <Grid container justifyContent="flex-end">

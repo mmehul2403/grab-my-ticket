@@ -20,9 +20,11 @@ import GuestNavbar from "./components/GuestNavbar";
 import Cinemas from "./components/order/Cinemas";
 import TicketBook from "./components/order/TicketBook";
 import UserOrders from "./components/order/UserOrders";
+import UserOrderHistory from "./components/order/UserOrderHistory";
 
 function App() {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
+  const userId = parseInt(user?.user_id);
   return (
     <React.StrictMode>
       <Router>
@@ -43,6 +45,10 @@ function App() {
             <Route path="/Cinemas/:movie_id" element={<Cinemas />}></Route>
             <Route path="/Book/:showtime_id" element={<TicketBook />}></Route>
             <Route path="/UserOrders" element={<UserOrders />}></Route>
+            <Route
+              path="/UserOrderHistory"
+              element={<UserOrderHistory userId={userId} />}
+            ></Route>
           </Routes>
         </div>
       </Router>

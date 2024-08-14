@@ -12,7 +12,8 @@ export const useAuth = () => useContext(AuthContext);
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
   const [user, setUser] = useState(null);
-  const [currentUser, { loading, error, data }] = useLazyQuery(QUERY_USER_CURRENT);
+  const [currentUser, { loading, error, data }] =
+    useLazyQuery(QUERY_USER_CURRENT);
   useEffect(() => {
     const checkAuth = async () => {
       if (auth) return;
@@ -34,7 +35,11 @@ const AuthProvider = ({ children }) => {
     checkAuth();
   }, [auth]);
 
-  return <AuthContext.Provider value={{ auth, setAuth, user }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ auth, setAuth, user }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

@@ -28,6 +28,7 @@ const QUERY_USER_CURRENT = gql`
   query user {
     currentUser {
       user_id
+      email_address
       first_name
       last_name
       date_of_birth
